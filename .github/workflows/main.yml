@@ -13,9 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List files in root directory for debugging
-        run: ls -R  # Lists all directories and subdirectories
-
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -23,14 +20,14 @@ jobs:
 
       - name: Build with Maven
         run: |
-          cd git_batchdemo  # Replace this with the correct directory path based on the ls output
+          cd git_batchdemo  # Correct path to git_batchdemo
           mvn clean package
 
       - name: Upload WAR file
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: git_batchdemo/target/*.war  # Update path based on directory structure
+          path: git_batchdemo/target/*.war  # Correct path to target
 
   deploy:
     needs: build
@@ -60,3 +57,4 @@ jobs:
           HOSTNAME: ${{ secrets.SSH_HOST }}
         run: |
           ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} 'sudo cp /home/ubuntu/*.war /var/lib/tomcat9/webapps/'
+
